@@ -1,3 +1,4 @@
+
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 
 // Auth Slice
@@ -18,10 +19,10 @@ const authSlice = createSlice({
   },
 });
 
-// Cart Slice
-const cartSlice = createSlice({
-  name: 'cart',
-  initialState: { items: [] },
+// Orders Slice (replacing cartSlice to handle orders)
+const ordersSlice = createSlice({
+  name: 'orders',
+  initialState: { items: [], orders: [] },
   reducers: {
     addToCart: (state, action) => {
       state.items.push(action.payload);
@@ -32,16 +33,29 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.items = [];
     },
+    addOrder: (state, action) => {
+      state.orders.push(action.payload);
+    },
+    confirmOrder: (state, action) => {
+      state.orders = state.orders.map(order =>
+        order.id === action.payload ? { ...order, status: 'Confirmed' } : order
+      );
+    },
+    rejectOrder: (state, action) => {
+      state.orders = state.orders.map(order =>
+        order.id === action.payload ? { ...order, status: 'Rejected' } : order
+      );
+    },
   },
 });
 
 export const { login, logout } = authSlice.actions;
-export const { addToCart, removeFromCart, clearCart } = cartSlice.actions;
+export const { addToCart, removeFromCart, clearCart, addOrder, confirmOrder, rejectOrder } = ordersSlice.actions;
 
 const store = configureStore({
   reducer: {
     auth: authSlice.reducer,
-    cart: cartSlice.reducer,
+    orders: ordersSlice.reducer,
   },
 });
 
