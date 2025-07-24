@@ -84,11 +84,14 @@ function BuyerDashboard() {
         ) : (
           filteredAnimals.map(animal => (
             <div key={animal.id} className="bg-white p-4 rounded shadow-md flex flex-col">
-              <img
-                src={animal.image}
-                alt={animal.name}
-                className="w-full h-48 object-cover rounded mb-4"
-              />
+           
+<img
+  src={animal.image_url || '/placeholder.jpg'}
+  alt={animal.name}
+  className="w-full h-48 object-cover rounded mb-4"
+  onError={(e) => { e.target.src = '/placeholder.jpg'; }}
+/>
+
               <div className="flex-1">
                 <h3 className="text-xl font-bold">{animal.name}</h3>
                 <p className="text-gray-600">Breed: {animal.breed}</p>
